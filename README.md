@@ -1,6 +1,6 @@
 # UDLF Web Application
 
-Aplicação web completa para execução de algoritmos UDLF (Unified Data Learning Framework), incluindo frontend em Next.js e API em Node.js/Express.
+Aplicação web completa para execução de algoritmos UDLF (Unsupervised Distance Learning Framework), incluindo frontend em Next.js e API em Node.js/Express.
 
 ## 🏗️ Arquitetura
 
@@ -9,47 +9,45 @@ Este projeto unifica dois repositórios separados em uma única aplicação Dock
 - **Frontend**: Interface web em Next.js/React
 - **Backend**: API REST em Node.js/Express com integração ao UDLF
 
-## 🚀 Início Rápido
+## 📋 Pré-requisitos
 
-### Setup Automático
+- Docker
+- Docker Compose
+- Git (para submódulos)
 
+## 🚀 Início Rápido - 3 Passos
+
+### 1️⃣ Clone o repositório e os submódulos
 ```bash
-# Execute o script de setup
-./setup.sh
+git clone https://github.com/itMatos/udlf-web-front-and-api.git
+cd udlf-web-front-and-api
+git submodule update --init --recursive
 ```
 
-### Setup Manual
+### 2️⃣ Configure o ambiente
+```bash
+# Opção A: Script automático (recomendado)
+./quick-setup.sh
+```
 
-1. **Configure o ambiente**:
-   ```bash
-   # Clone e inicialize submódulos
-   git clone <seu-repositorio>
-   cd udlf-web-front-and-api
-   git submodule update --init --recursive
-   
-   # Configure variáveis de ambiente
-   cp env.example .env
-   # Edite .env conforme necessário
-   ```
+Insira o caminho para seu diretório de Datasets
 
-2. **Instale dependências dos submódulos**:
-   ```bash
-   # Para desenvolvimento local (obrigatório)
-   ./install-dependencies.sh
-   
-   # Ou manualmente:
-   cd front && npm install && cd ..
-   cd udlf-web-api && npm install && cd ..
-   ```
+### 3️⃣ Execute
+```bash
+docker-compose up --build
+```
 
-3. **Execute a aplicação**:
-   ```bash
-   docker-compose up --build
-   ```
+**Pronto!** Acesse: http://localhost:3000 e comece a testar!
 
-4. **Acesse**:
-   - Frontend: http://localhost:3000
-   - API: http://localhost:8080
+## 📋 O que você precisa configurar
+
+**Apenas 1 variável:**
+- `HOST_UDLF_PATH`: Caminho para seu diretório de datasets
+
+**Exemplo:**
+```bash
+HOST_UDLF_PATH=/Users/username/datasets
+```
 
 ## 📁 Estrutura do Projeto
 
@@ -57,33 +55,42 @@ Este projeto unifica dois repositórios separados em uma única aplicação Dock
 udlf-web-front-and-api/
 ├── front/                    # Frontend (Next.js)
 ├── udlf-web-api/            # Backend (Node.js/Express)
+├── .env                     # Suas configurações (criar)
+├── setup.env                # Template de configuração
+├── quick-setup.sh           # Script de setup automático
 ├── docker-compose.yml       # Configuração Docker unificada
-├── .env                     # Variáveis de ambiente (criar a partir do env.example)
-├── env.example              # Exemplo de configuração
-├── setup.sh                 # Script de setup automático
+├── env.example              # Exemplo de configuração (legacy)
+├── setup.sh                 # Script de setup original
 └── DOCKER_SETUP.md          # Documentação detalhada do Docker
 ```
 
 ## 🔧 Comandos Úteis
 
 ```bash
-# Desenvolvimento
-docker-compose up --build           # Construir e iniciar
-docker-compose up -d                # Executar em background
-docker-compose down                 # Parar serviços
+# Setup
+./quick-setup.sh                   # Configuração automática
+cp setup.env .env                  # Configuração manual
+
+# Execução
+docker-compose up --build          # Construir e iniciar
+docker-compose up -d               # Executar em background
+docker-compose down                # Parar serviços
 
 # Logs
-docker-compose logs -f              # Ver logs em tempo real
-docker-compose logs api             # Logs apenas da API
-docker-compose logs front           # Logs apenas do frontend
+docker-compose logs -f             # Ver logs em tempo real
+docker-compose logs api            # Logs apenas da API
+docker-compose logs front          # Logs apenas do frontend
 
 # Manutenção
 docker-compose exec api npm run build    # Build da API
 docker-compose exec front npm run lint   # Lint do frontend
+docker-compose down -v             # Limpar volumes e containers
 ```
 
 ## 📚 Documentação
 
+- [Início Rápido](QUICK_START.md) - Guia de 3 passos
+- [Instruções](INSTRUÇÕES.md) - Instruções detalhadas em português
 - [Setup Docker Detalhado](DOCKER_SETUP.md) - Guia completo de configuração
 - [Guia de Submódulos](SUBMODULES.md) - Como trabalhar com submódulos e resolver problemas comuns
 - [Frontend README](front/README.md) - Documentação do frontend
@@ -121,12 +128,16 @@ docker-compose up --build
 
 ### Variáveis de Ambiente
 
-Principais configurações no arquivo `.env`:
+**Configuração Simplificada:**
+- `HOST_UDLF_PATH`: Caminho para seu diretório de datasets (única variável obrigatória)
 
-- `HOST_UDLF_PATH`: Caminho para o executável UDLF
+**Variáveis Automáticas (não precisam ser alteradas):**
 - `API_PORT`: Porta da API (padrão: 8080)
 - `FRONTEND_PORT`: Porta do Frontend (padrão: 3000)
 - `NODE_ENV`: Ambiente (development/production)
+- `API_INTERNAL_URL`: URL interna da API
+- `FRONTEND_INTERNAL_URL`: URL interna do Frontend
+- `NEXT_PUBLIC_URL_API_LOCAL`: URL pública da API
 
 ### Hot Reload
 
@@ -142,11 +153,34 @@ A aplicação usa Docker Compose para orquestrar os serviços:
 - **Volumes**: Persistência de dados e hot reload
 - **Ambiente**: Configuração unificada via `.env`
 
-## 📋 Pré-requisitos
+## 🆘 Solução de Problemas
 
-- Docker
-- Docker Compose
-- Git (para submódulos)
+### Erro: "Directory not found"
+```bash
+# Crie o diretório de datasets
+mkdir -p /seu/caminho/datasets
+```
+
+### Erro: "Port already in use"
+```bash
+# Verifique se as portas 3000 e 8080 estão livres
+lsof -i :3000
+lsof -i :8080
+```
+
+### Erro: "Docker not found"
+```bash
+# Instale Docker Desktop
+# https://www.docker.com/products/docker-desktop
+```
+
+### Problemas com submódulos
+```bash
+# Reinstale os submódulos
+git submodule update --init --recursive
+```
+
+
 
 ## 🤝 Contribuição
 
@@ -155,6 +189,12 @@ A aplicação usa Docker Compose para orquestrar os serviços:
 3. Commit suas mudanças
 4. Push para a branch
 5. Abra um Pull Request
+
+## 🎯 URLs da Aplicação
+
+- **Interface Web**: http://localhost:3000
+- **API REST**: http://localhost:8080
+- **Health Check**: http://localhost:8080/
 
 ## 📄 Licença
 
