@@ -32,12 +32,22 @@ Este projeto unifica dois repositórios separados em uma única aplicação Dock
    # Edite .env conforme necessário
    ```
 
-2. **Execute a aplicação**:
+2. **Instale dependências dos submódulos**:
+   ```bash
+   # Para desenvolvimento local (obrigatório)
+   ./install-dependencies.sh
+   
+   # Ou manualmente:
+   cd front && npm install && cd ..
+   cd udlf-web-api && npm install && cd ..
+   ```
+
+3. **Execute a aplicação**:
    ```bash
    docker-compose up --build
    ```
 
-3. **Acesse**:
+4. **Acesse**:
    - Frontend: http://localhost:3000
    - API: http://localhost:8080
 
@@ -75,10 +85,39 @@ docker-compose exec front npm run lint   # Lint do frontend
 ## 📚 Documentação
 
 - [Setup Docker Detalhado](DOCKER_SETUP.md) - Guia completo de configuração
+- [Guia de Submódulos](SUBMODULES.md) - Como trabalhar com submódulos e resolver problemas comuns
 - [Frontend README](front/README.md) - Documentação do frontend
 - [API README](udlf-web-api/README) - Documentação da API
 
 ## 🛠️ Desenvolvimento
+
+### Desenvolvimento Local (sem Docker)
+
+Para desenvolvimento local, você precisa instalar as dependências dos submódulos:
+
+```bash
+# Instalar dependências automaticamente
+./install-dependencies.sh
+
+# Ou manualmente para cada submódulo:
+cd front && npm install && cd ..
+cd udlf-web-api && npm install && cd ..
+
+# Executar localmente:
+# Terminal 1 - API
+cd udlf-web-api && npm run dev
+
+# Terminal 2 - Frontend  
+cd front && npm run dev
+```
+
+### Desenvolvimento com Docker
+
+Para desenvolvimento com Docker (recomendado):
+
+```bash
+docker-compose up --build
+```
 
 ### Variáveis de Ambiente
 
