@@ -1,15 +1,47 @@
 version: "3.8"
+
 services:
   api:
-    build: ./udlf-web-api
-    container_name: api
+    build:
+      context: ./udlf-web-api
+      dockerfile: Dockerfile
+    container_name: udlf_web_api
     ports:
       - "8080:8080"
+    volumes:
+      - ./udlf-web-api:/app
+      - /app/node_modules
+      - ${HOST_UDLF_PATH}:/app/Datasets
+      - ./udlf-web-api/outputs:/app/outputs
+      - ./udlf-web-api/uploads:/app/uploads
+    environment:
+      - NODE_ENV=development
+    env_file:
+      - .env
+    restart: on-failure
+    networks:
+      - udlf-network
 
   front:
-    build: ./front
-    container_name: front
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    container_name: udlf-web-frontend
     ports:
       - "3000:3000"
+    volumes:
+      - ./front:/frontend
+      - /frontend/node_modules
+    environment:
+      - NODE_ENV=development
+    env_file:
+      - .env
     depends_on:
       - api
+    restart: on-failure
+    networks:
+      - udlf-network
+
+networks:
+  udlf-network:
+    driver: bridge
