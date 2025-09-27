@@ -1,6 +1,6 @@
 [submodule "front"]
 	path = front
-	url = git@github.com-pessoal:itMatos/udlf-web.git
+	url = git@github.com:itMatos/udlf-web.git
 [submodule "udlf-web-api"]
 	path = udlf-web-api
-	url = git@github.com-pessoal:itMatos/udlf-web-api.git
+	url = git@github.com:itMatos/udlf-web-api.git
