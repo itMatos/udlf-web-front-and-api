@@ -1,116 +1,107 @@
 # UDLF Web Application
 
-Aplicação web completa para execução de algoritmos UDLF (Unsupervised Distance Learning Framework), incluindo frontend em Next.js e API em Node.js/Express.
+Complete web application for executing UDLF (Unsupervised Distance Learning Framework) algorithms, including Next.js frontend and Node.js/Express API.
 
-## 🏗️ Arquitetura
+## 🏗️ Architecture
 
-Este projeto unifica dois repositórios separados em uma única aplicação Docker:
+This project unifies two separate repositories into a single Docker application:
 
-- **Frontend**: Interface web em Next.js/React
-- **Backend**: API REST em Node.js/Express com integração ao UDLF
+- **Frontend**: Web interface in Next.js/React
+- **Backend**: REST API in Node.js/Express with UDLF integration
 
-## 📋 Pré-requisitos
+## 📋 Prerequisites
 
 - Docker
 - Docker Compose
-- Git (para submódulos)
+- Git (for submodules)
 
-## 🚀 Início Rápido - 3 Passos
+## 🚀 Quick Start - 3 Steps
 
-### 1️⃣ Clone o repositório e os submódulos
+### 1️⃣ Clone the repository and submodules
 ```bash
 git clone https://github.com/itMatos/udlf-web-front-and-api.git
 cd udlf-web-front-and-api
 git submodule update --init --recursive
 ```
 
-### 2️⃣ Configure o ambiente
+### 2️⃣ Configure the environment
 ```bash
-# Opção A: Script automático (recomendado)
+# Option A: Automatic script (recommended)
 ./quick-setup.sh
 ```
 
-Insira o caminho para seu diretório de Datasets
+Enter the path to your Datasets directory
 
-### 3️⃣ Execute
+### 3️⃣ Run
 ```bash
 docker-compose up --build
 ```
 
-**Pronto!** Acesse: http://localhost:3000 e comece a testar!
+**Ready!** Access: http://localhost:3000 and start testing!
 
-## 📋 O que você precisa configurar
+## 📋 What you need to configure
 
-**Apenas 1 variável:**
-- `HOST_UDLF_PATH`: Caminho para seu diretório de datasets
+**Only 1 variable:**
+- `HOST_UDLF_PATH`: Path to your datasets directory
 
-**Exemplo:**
+**Example:**
 ```bash
 HOST_UDLF_PATH=/Users/username/datasets
 ```
 
-## 📁 Estrutura do Projeto
+## 📁 Project Structure
 
 ```
 udlf-web-front-and-api/
 ├── front/                    # Frontend (Next.js)
 ├── udlf-web-api/            # Backend (Node.js/Express)
-├── .env                     # Suas configurações (criar)
-├── setup.env                # Template de configuração
-├── quick-setup.sh           # Script de setup automático
-├── docker-compose.yml       # Configuração Docker unificada
-├── env.example              # Exemplo de configuração (legacy)
-├── setup.sh                 # Script de setup original
-└── DOCKER_SETUP.md          # Documentação detalhada do Docker
+├── .env                     # Your configurations (create)
+├── setup.env                # Configuration template
+├── quick-setup.sh           # Automatic setup script
+├── docker-compose.yml       # Unified Docker configuration
+├── env.example              # Configuration example (legacy)
+├── setup.sh                 # Original setup script
+└── DOCKER_SETUP.md          # Detailed Docker documentation
 ```
 
-## 🔧 Comandos Úteis
+## 🔧 Useful Commands
 
 ```bash
 # Setup
-./quick-setup.sh                   # Configuração automática
-cp setup.env .env                  # Configuração manual
+./quick-setup.sh                   # Automatic configuration
+cp setup.env .env                  # Manual configuration
 
-# Execução
-docker-compose up --build          # Construir e iniciar
-docker-compose up -d               # Executar em background
-docker-compose down                # Parar serviços
+# Execution
+docker-compose up --build          # Build and start
+docker-compose up -d               # Run in background
+docker-compose down                # Stop services
 
 # Logs
-docker-compose logs -f             # Ver logs em tempo real
-docker-compose logs api            # Logs apenas da API
-docker-compose logs front          # Logs apenas do frontend
+docker-compose logs -f             # View logs in real time
+docker-compose logs api            # API logs only
+docker-compose logs front          # Frontend logs only
 
-# Manutenção
-docker-compose exec api npm run build    # Build da API
-docker-compose exec front npm run lint   # Lint do frontend
-docker-compose down -v             # Limpar volumes e containers
+# Maintenance
+docker-compose exec api npm run build    # Build API
+docker-compose exec front npm run lint   # Frontend lint
+docker-compose down -v             # Clean volumes and containers
 ```
 
-## 📚 Documentação
+## 🛠️ Development
 
-- [Início Rápido](QUICK_START.md) - Guia de 3 passos
-- [Instruções](INSTRUÇÕES.md) - Instruções detalhadas em português
-- [Setup Docker Detalhado](DOCKER_SETUP.md) - Guia completo de configuração
-- [Guia de Submódulos](SUBMODULES.md) - Como trabalhar com submódulos e resolver problemas comuns
-- [Frontend README](front/README.md) - Documentação do frontend
-- [API README](udlf-web-api/README) - Documentação da API
+### Local Development (without Docker)
 
-## 🛠️ Desenvolvimento
-
-### Desenvolvimento Local (sem Docker)
-
-Para desenvolvimento local, você precisa instalar as dependências dos submódulos:
+For local development, you need to install the submodules dependencies:
 
 ```bash
-# Instalar dependências automaticamente
+# Install dependencies automatically
 ./install-dependencies.sh
 
-# Ou manualmente para cada submódulo:
+# Or manually for each submodule:
 cd front && npm install && cd ..
 cd udlf-web-api && npm install && cd ..
 
-# Executar localmente:
+# Run locally:
 # Terminal 1 - API
 cd udlf-web-api && npm run dev
 
@@ -118,84 +109,72 @@ cd udlf-web-api && npm run dev
 cd front && npm run dev
 ```
 
-### Desenvolvimento com Docker
+### Development with Docker
 
-Para desenvolvimento com Docker (recomendado):
+For development with Docker (recommended):
 
 ```bash
 docker-compose up --build
 ```
 
-### Variáveis de Ambiente
+### Environment Variables
 
-**Configuração Simplificada:**
-- `HOST_UDLF_PATH`: Caminho para seu diretório de datasets (única variável obrigatória)
+**Simplified Configuration:**
+- `HOST_UDLF_PATH`: Path to your datasets directory (only required variable)
 
-**Variáveis Automáticas (não precisam ser alteradas):**
-- `API_PORT`: Porta da API (padrão: 8080)
-- `FRONTEND_PORT`: Porta do Frontend (padrão: 3000)
-- `NODE_ENV`: Ambiente (development/production)
-- `API_INTERNAL_URL`: URL interna da API
-- `FRONTEND_INTERNAL_URL`: URL interna do Frontend
-- `NEXT_PUBLIC_URL_API_LOCAL`: URL pública da API
+**Automatic Variables (don't need to be changed):**
+- `API_PORT`: API port (default: 8080)
+- `FRONTEND_PORT`: Frontend port (default: 3000)
+- `NODE_ENV`: Environment (development/production)
+- `API_INTERNAL_URL`: Internal API URL
+- `FRONTEND_INTERNAL_URL`: Internal Frontend URL
+- `NEXT_PUBLIC_URL_API_LOCAL`: Public API URL
 
 ### Hot Reload
 
-Os volumes estão configurados para desenvolvimento com hot reload:
-- Mudanças no código são refletidas automaticamente
-- `node_modules` são persistidos para melhor performance
+Volumes are configured for development with hot reload:
+- Code changes are automatically reflected
+- `node_modules` are persisted for better performance
 
 ## 🐳 Docker
 
-A aplicação usa Docker Compose para orquestrar os serviços:
+The application uses Docker Compose to orchestrate services:
 
-- **Rede**: `udlf-network` para comunicação interna
-- **Volumes**: Persistência de dados e hot reload
-- **Ambiente**: Configuração unificada via `.env`
+- **Network**: `udlf-network` for internal communication
+- **Volumes**: Data persistence and hot reload
+- **Environment**: Unified configuration via `.env`
 
-## 🆘 Solução de Problemas
+## 🆘 Troubleshooting
 
-### Erro: "Directory not found"
+### Error: "Directory not found"
 ```bash
-# Crie o diretório de datasets
-mkdir -p /seu/caminho/datasets
+# Create the datasets directory
+mkdir -p /your/path/datasets
 ```
 
-### Erro: "Port already in use"
+### Error: "Port already in use"
 ```bash
-# Verifique se as portas 3000 e 8080 estão livres
+# Check if ports 3000 and 8080 are free
 lsof -i :3000
 lsof -i :8080
 ```
 
-### Erro: "Docker not found"
+### Error: "Docker not found"
 ```bash
-# Instale Docker Desktop
+# Install Docker Desktop
 # https://www.docker.com/products/docker-desktop
 ```
 
-### Problemas com submódulos
+### Problems with submodules
 ```bash
-# Reinstale os submódulos
+# Reinstall submodules
 git submodule update --init --recursive
 ```
 
 
 
-## 🤝 Contribuição
+## 🎯 Application URLs
 
-1. Faça fork do projeto
-2. Crie uma branch para sua feature
-3. Commit suas mudanças
-4. Push para a branch
-5. Abra um Pull Request
-
-## 🎯 URLs da Aplicação
-
-- **Interface Web**: http://localhost:3000
-- **API REST**: http://localhost:8080
+- **Web Interface**: http://localhost:3000
+- **REST API**: http://localhost:8080
 - **Health Check**: http://localhost:8080/
-
-## 📄 Licença
-
-Este projeto está sob licença [especificar licença].
